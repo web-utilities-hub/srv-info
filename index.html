@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Extension Update Center</title>
+    
+    <!-- Ваша Umami аналитика -->
+<script defer src="https://cloud.umami.is/script.js" data-website-id="e1b74360-b2e2-47ed-8189-e509bd6d9d21"></script>
+    <style>
+        :root {
+            --bg-left: #f8fafc;
+            --bg-right: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --accent-blue: #2563eb;
+            --accent-blue-hover: #1d4ed8;
+            --mint: #10b981;
+            --border-color: #e2e8f0;
+        }
+
+        html, body {
+            margin: 0; padding: 0; width: 100%; height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            overflow: hidden;
+            background-color: #fff;
+        }
+
+        /* Глобальное увеличение всего интерфейса на 10% */
+        .scale-wrapper {
+            width: 100%;
+            height: 100vh;
+            transform: scale(1.1);
+            transform-origin: center center;
+            box-sizing: border-box;
+        }
+
+        /* Двухпанельная структура на весь экран */
+        .split-container {
+            display: flex;
+            width: 100%;
+            height: 100vh;
+        }
+
+        /* ЛЕВАЯ ПАНЕЛЬ: Статус апдейта текущего расширения */
+        .left-panel {
+            flex: 1;
+            background-color: var(--bg-left);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 60px 8%;
+            box-sizing: border-box;
+        }
+
+        .update-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #d1fae5;
+            color: #065f46;
+            padding: 6px 14px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            width: fit-content;
+        }
+
+        .left-panel h1 {
+            font-size: 38px;
+            font-weight: 800;
+            color: var(--text-main);
+            line-height: 1.2;
+            margin: 0 0 16px;
+            letter-spacing: -1px;
+        }
+
+        .left-panel p {
+            font-size: 16px;
+            line-height: 1.6;
+            color: var(--text-muted);
+            margin: 0 0 32px;
+            max-width: 460px;
+        }
+
+        /* Список улучшений в левой панели */
+        .changelog {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .change-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        .change-icon {
+            background: #fff;
+            border: 1px solid var(--border-color);
+            color: var(--mint);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            flex-shrink: 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+        .change-text strong {
+            display: block;
+            font-size: 14px;
+            color: var(--text-main);
+        }
+        .change-text span {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* ПРАВАЯ ПАНЕЛЬ: Сочная реклама Vidify для максимального CTR */
+        .right-panel {
+            flex: 1.2;
+            background: radial-gradient(circle at 80% 20%, #eff6ff 0%, #ffffff 60%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 60px 10%;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .promo-badge {
+            background: linear-gradient(135deg, #e0e7ff 0%, #e0f2fe 100%);
+            color: var(--accent-blue);
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            width: fit-content;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .right-panel h2 {
+            font-size: 46px;
+            font-weight: 900;
+            line-height: 1.15;
+            color: var(--text-main);
+            margin: 0 0 20px;
+            letter-spacing: -1.5px;
+        }
+        .right-panel h2 span {
+            background: linear-gradient(to right, #2563eb, #0ea5e9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Стильная кнопка действия с анимацией пульсации */
+        .btn-install {
+            background: var(--accent-blue);
+            color: white;
+            padding: 18px 44px;
+            border-radius: 16px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+            width: fit-content;
+            box-shadow: 0 20px 40px rgba(37, 99, 235, 0.25);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            animation: pulse-attention 2.5s infinite;
+        }
+        .btn-install:hover {
+            transform: translateY(-3px) scale(1); /* Сохраняем масштаб при ховере */
+            background: var(--accent-blue-hover);
+            box-shadow: 0 25px 50px rgba(37, 99, 235, 0.4);
+        }
+        .btn-install:active {
+            transform: translateY(1px);
+        }
+        
+        /* Иконка Web Store внутри кнопки */
+        .store-icon {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+            flex-shrink: 0;
+        }
+
+        /* Плавная сочная пульсация кнопки */
+        @keyframes pulse-attention {
+            0% { transform: scale(1); box-shadow: 0 20px 40px rgba(37, 99, 235, 0.25); }
+            50% { transform: scale(1.03); box-shadow: 0 25px 50px rgba(37, 99, 235, 0.45); }
+            100% { transform: scale(1); box-shadow: 0 20px 40px rgba(37, 99, 235, 0.25); }
+        }
+
+        /* Дополнительные триггеры доверия под кнопкой */
+        .trust-lines {
+            margin-top: 24px;
+            display: flex;
+            gap: 24px;
+        }
+        .trust-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+        .trust-item svg {
+            color: var(--mint);
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Скромный безопасный футер в самом низу */
+        .split-footer {
+            position: absolute;
+            bottom: 20px;
+            left: 10%;
+            right: 10%;
+            font-size: 11px;
+            color: var(--text-muted);
+            opacity: 0.6;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Обертка, которая увеличивает весь контент ровно на 10% -->
+    <div class="scale-wrapper">
+        <div class="split-container">
+            
+            <!-- ЛЕВАЯ СТОРОНА -->
+            <main class="left-panel">
+                <div class="update-badge">
+                    ✓ Successfully Updated
+                </div>
+                
+                <h1>The extension has been updated in your Chrome browser</h1>
+                <p>Make sure to test its new capabilities. All core systems are running flawlessly.</p>
+                
+                <div class="changelog">
+                    <div class="change-item">
+                        <div class="change-icon">✓</div>
+                        <div class="change-text">
+                            <strong>Engine Optimization</strong>
+                            <span>Improved loading speed and script stability.</span>
+                        </div>
+                    </div>
+                    <div class="change-item">
+                        <div class="change-icon">✓</div>
+                        <div class="change-text">
+                            <strong>Bug Fixes</strong>
+                            <span>Resolved minor issues with memory usage in active tabs.</span>
+                        </div>
+                    </div>
+                    <div class="change-item">
+                        <div class="change-icon">✓</div>
+                        <div class="change-text">
+                            <strong>Security Patch</strong>
+                            <span>Enhanced internal manifest compliance.</span>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <!-- ПРАВАЯ СТОРОНА -->
+            <section class="right-panel">
+                <div class="promo-badge">🔥 Recommended Product</div>
+                
+                <h2><span>Video Downloader | Vidify</span></h2>
+
+                <p style="font-size: 18px; font-weight: 700; color: var(--text-main); margin-bottom: 24px;">
+                    Easy video download for offline viewing:
+                </p>
+
+                <ul style="list-style: none; padding: 0; margin: 0 0 40px 0; display: flex; flex-direction: column; gap: 14px;">
+                    <li style="display: flex; align-items: center; gap: 10px; font-size: 15px; color: #475569;">
+                        <span style="color: var(--accent-blue); font-weight: bold; font-size: 18px;">✦</span> 
+                        Download M3U8 & HLS streaming videos seamlessly
+                    </li>
+                    <li style="display: flex; align-items: center; gap: 10px; font-size: 15px; color: #475569;">
+                        <span style="color: var(--accent-blue); font-weight: bold; font-size: 18px;">✦</span> 
+                        Save media from popular social networks in one click
+                    </li>
+                    <li style="display: flex; align-items: center; gap: 10px; font-size: 15px; color: #475569;">
+                        <span style="color: var(--accent-blue); font-weight: bold; font-size: 18px;">✦</span> 
+                        100% Free, lightweight, and securely integrated
+                    </li>
+                </ul>
+
+                <!-- Кнопка действия со встроенным официальным логотипом Chrome Web Store -->
+                <!-- Замените YOUR_EXTENSION_ID на ваш реальный ID в Chrome Web Store -->
+                <a data-umami-event="Click Install Button" href="https://cutt.ly/tt0g9qvm" class="btn-install" target="_blank">
+                    <img class="store-icon" src="https://upload.wikimedia.org/wikipedia/commons/0/0c/Google_Chrome_Web_Store_icon_2022.svg" alt="Chrome Web Store">
+                    Add to Chrome - It's free
+                </a>
+
+                <!-- Маркеры доверия -->
+                <div class="trust-lines">
+                    <div class="trust-item">
+                        <svg fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                        Fully Free
+                    </div>
+                    <div class="trust-item">
+                        <svg fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                        No Ads or Limits
+                    </div>
+                    <div class="trust-item">
+                        <svg fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                        HD & 4K Support
+                    </div>
+                </div>
+
+                <!-- Безопасный дисклеймер внизу -->
+                <div class="split-footer">
+                    Disclaimer: This page serves as an independent product recommendation notification for existing users. It is not affiliated with, sponsored by, or endorsed by Google LLC or any other browser vendor. All trademarks belong to their respective owners.
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+</body>
+</html>
