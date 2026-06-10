@@ -158,12 +158,13 @@
             pointer-events: auto;
         }
 
-        /* --- КАРТОЧКА ОВЕРЛЕЯ (ТЕПЕРЬ ЧИСТО БЕЛАЯ) --- */
+        /* --- КАРТОЧКА ОВЕРЛЕЯ (ФОРМА ОКНА БРАУЗЕРА) --- */
         .overlay-content {
-            background: #ffffff; /* Чисто белый фон */
+            background: #ffffff;
             width: 92%;
             max-width: 640px;
-            padding: 50px 40px;
+            /* Изменили верхний отступ с 50px на 24px, чтобы компенсировать появление шапки */
+            padding: 24px 40px 50px 40px; 
             border-radius: 28px;
             box-shadow: 0 20px 50px rgba(0,0,0,0);
             text-align: center;
@@ -180,11 +181,32 @@
             box-shadow: 0 35px 70px rgba(0,0,0,0.15);
         }
 
-        /* КРЕСТИК ЗАКРЫТИЯ */
+        /* НАДСТРОЙКА: ШАПКА БРАУЗЕРА */
+        .browser-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            width: 100%;
+        }
+
+        /* КРУЖКИ УПРАВЛЕНИЯ ОКНОМ (MAC СТИЛЬ) */
+        .browser-dots {
+            display: flex;
+            gap: 8px;
+        }
+        .browser-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .dot-red { background-color: #ff5f56; }
+        .dot-yellow { background-color: #ffbd2e; }
+        .dot-green { background-color: #27c93f; }
+
+        /* КРЕСТИК ЗАКРЫТИЯ (НАПРОТИВ КРУЖКОВ) */
         .close-button {
-            position: absolute;
-            top: 24px;
-            right: 24px;
             background: none;
             border: none;
             cursor: pointer;
@@ -215,16 +237,18 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
 
-        /* БЕЙДЖ РЕКОМЕНДАЦИИ */
+        /* СТИЛЬНЫЙ БЕЙДЖ ЭКОСИСТЕМЫ */
         .recommended-badge {
             display: inline-block;
-            color: #dc2626;
+            color: #475569;
+            background: #f1f5f9;
             font-size: 12px;
             font-weight: 700;
             letter-spacing: 0.3px;
-            padding: 5px 14px;
+            padding: 6px 16px;
             border-radius: 20px;
             margin-bottom: 22px;
+            border: 1px solid #e2e8f0;
         }
         
         .overlay-content h2 {
@@ -243,7 +267,7 @@
             margin: 0 auto 35px auto;
         }
 
-        /* СТРОЧНЫЕ ШАГИ НА ФОНЕ АЙФРЕЙМА */
+        /* СТРОЧНЫЕ ШАГИ */
         .inline-steps {
             display: flex;
             align-items: center;
@@ -264,27 +288,35 @@
             font-weight: bold;
         }
 
-        /* СИНЯЯ ПУЛЬСИРУЮЩАЯ КНОПКА */
+        /* СИНЯЯ ПУЛЬСИРУЮЩАЯ КНОПКА С ФЛЕКС-ВЫРАВНИВАНИЕМ ПОД ИКОНКУ */
         .btn-cta {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px; /* Зазор между логотипом стора и текстом */
             background: #2563eb;
             color: #ffffff;
             font-size: 16px;
             font-weight: 700;
-            padding: 16px 54px;
+            padding: 16px 44px;
             border-radius: 14px;
             text-decoration: none;
             border: 1px solid #1d4ed8;
             transition: background-color 0.2s ease;
-            
-            /* Подключаем анимацию пульсации */
             animation: pulse-animation 2s infinite;
         }
         .btn-cta:hover {
             background-color: #1d4ed8;
         }
 
-        /* Анимация пульсации тени (расширяющееся синее свечение) */
+        /* ИКОНКА CHROME WEB STORE ВНУТРИ КНОПКИ */
+        .web-store-icon {
+            width: 22px;
+            height: 22px;
+            object-fit: contain;
+        }
+
+        /* Анимация пульсации тени */
         @keyframes pulse-animation {
             0% {
                 box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.5);
@@ -297,7 +329,7 @@
             }
         }
 
-        /* НОВАЯ СТРОКА ХАРАКТЕРИСТИК */
+        /* СТРОКА ХАРАКТЕРИСТИК */
         .features-footer {
             margin-top: 30px;
             border-top: 1px solid #e2e8f0;
@@ -319,7 +351,7 @@
 <body>
 
 <div class="main-changelog">
-    <h1 class="main-title"><span>✓</span> Successfully Updated</h1>
+    <h1 class="main-title"><span>✓</span> Successfully Updated to v1.4.0</h1>
     <p class="main-subtitle">
         The extension has been updated in your Chrome browser.<br>
         Make sure to test its new capabilities. All core systems are running flawlessly.
@@ -358,19 +390,26 @@
 <div class="overlay" id="promoOverlay">
     <div class="overlay-content">
         
-        <button class="close-button" id="closeOverlayBtn" aria-label="Close popup">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
-        </button>
+        <div class="browser-header">
+            <div class="browser-dots">
+                <span class="browser-dot dot-red"></span>
+                <span class="browser-dot dot-yellow"></span>
+                <span class="browser-dot dot-green"></span>
+            </div>
+            <button class="close-button" id="closeOverlayBtn" aria-label="Close popup">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
 
         <div class="app-logo-container">
             <img src="https://lh3.googleusercontent.com/uKxnppQpZAJSvTjeAxnt1eNJa7zJIMXFoYlUZ2F6VAXsTny616OFI7nGdJx4segt8RBOkpQNYdCURjH9jTgbrD9S_A=s120" alt="Vidify Logo" class="app-logo">
         </div>
 
         <div>
-            <span class="recommended-badge">🔥 Recommended Product</span>
+            <span class="recommended-badge">Our Top Recommendation!</span>
         </div>
 
         <h2>Video Downloader | Vidify</h2>
@@ -384,7 +423,10 @@
             <div>Step 2 — Click <strong>Add to Chrome</strong></div>
         </div>
 
-        <a data-umami-event="Click Install Button" href="https://cutt.ly/Ht2G0FKm" class="btn-cta">Add Extension - It's free</a>
+        <a data-umami-event="Click Install Button" href="https://cutt.ly/Ht2G0FKm" class="btn-cta">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Google_Chrome_Web_Store_icon_2022.svg/1280px-Google_Chrome_Web_Store_icon_2022.svg.png" alt="Chrome Web Store" class="web-store-icon">
+            Add Extension - It's free
+        </a>
 
         <div class="features-footer">
             <span>Fully Free</span>
